@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import {
+  AddTodoForm,
+  Container,
+  DropContainer,
+  Navbar,
+  TodoItem,
+} from "./components";
+import { HandleSubmit } from "./types";
+import { useTodos } from "./hooks";
+import { AnimatePresence, MotionConfig, motion } from "framer-motion";
+import { FinalDrop } from "./components/FinalDrop";
+import { TODOS } from "./lib/data";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [editingText, setEditingText] = useState<string>("");
+
+  const { todos, addTodo, editTodo } = useTodos();
+
+  interface Item {
+    id: string;
+    text: string;
+  }
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
+  const handleTodoSubmit: HandleSubmit = (todo) => {
+    addTodo(todo);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <MotionConfig>
+      <Navbar />
+
+      <main>
+        <Container>
+          <AddTodoForm handleSubmit={handleTodoSubmit} value={editingText} />
+          {/* <AlertContainer type="success" text="Form successfully added" /> */}
+
+          <motion.div className="space-y-5 max-w-2xl mx-auto mt-10">
+            {todos.length > 0 && <DropContainer todos={todos} />}
+
+            {todos.length < 1 && (
+              <p className="h3 text-center text-slate-400 mt-20">
+                You have no todos
+              </p>
+            )}
+          </motion.div>
+        </Container>
+      </main>
+
+      <div className="my-10 max-w-xl mx-auto"></div>
+    </MotionConfig>
+  );
 }
 
-export default App
+export default App;
