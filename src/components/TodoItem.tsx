@@ -12,7 +12,7 @@ type TodoItemProps = MotionProps & {
   todo: Todo;
 };
 
-export const TodoItem: FC<TodoItemProps> = ({ todo, ...rest }) => {
+export const TodoItem: FC<TodoItemProps> = ({ todo }) => {
   const { deleteTodo, todos, editTodo } = useTodos();
   const [editable, setEditable] = useState(false);
   const [content, setContent] = useState<string>(todo.title);

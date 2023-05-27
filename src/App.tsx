@@ -1,35 +1,10 @@
-import { useEffect, useState } from "react";
-import {
-  AddTodoForm,
-  Container,
-  DropContainer,
-  Navbar,
-  TodoItem,
-} from "./components";
+import { AddTodoForm, Container, DropContainer, Navbar } from "./components";
 import { HandleSubmit } from "./types";
 import { useTodos } from "./hooks";
-import { AnimatePresence, MotionConfig, motion } from "framer-motion";
-import { FinalDrop } from "./components/FinalDrop";
-import { TODOS } from "./lib/data";
+import { MotionConfig, motion } from "framer-motion";
 
 function App() {
-  const [darkMode, setDarkMode] = useState<boolean>(true);
-  const [editingText, setEditingText] = useState<string>("");
-
-  const { todos, addTodo, editTodo } = useTodos();
-
-  interface Item {
-    id: string;
-    text: string;
-  }
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
+  const { todos, addTodo } = useTodos();
 
   const handleTodoSubmit: HandleSubmit = (todo) => {
     addTodo(todo);
@@ -41,8 +16,7 @@ function App() {
 
       <main>
         <Container>
-          <AddTodoForm handleSubmit={handleTodoSubmit} value={editingText} />
-          {/* <AlertContainer type="success" text="Form successfully added" /> */}
+          <AddTodoForm handleSubmit={handleTodoSubmit} />
 
           <motion.div className="space-y-5 max-w-2xl mx-auto mt-10">
             {todos.length > 0 && <DropContainer todos={todos} />}

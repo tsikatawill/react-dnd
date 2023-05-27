@@ -1,4 +1,4 @@
-import { Todo, TodoDragStyles } from "../types";
+import { Todo } from "../types";
 
 export const getLocalTodos: () => Todo[] = () => {
   const localTodos = JSON.parse(String(localStorage.getItem("todos")));
@@ -14,11 +14,3 @@ export const getLocalTodos: () => Todo[] = () => {
 export const updateLocalTodos: (todos: Todo[]) => void = (todos) => {
   localStorage.setItem("todos", JSON.stringify(todos));
 };
-
-// const onDragStyles = "bg-red-500 cursor-grab";
-
-// export const dragStyles = {
-//   onDrag: onDragStyles,
-//   onDrop: onDragStyles,
-//   onOver: onDragStyles,
-// };
